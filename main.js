@@ -7,8 +7,14 @@ const pathCharacter = '*';
 
 class Field {
   constructor(field) {
-    this.playerX = 0;
-    this.playerY = 0;
+    for (let i = 0; i < field.length; i++) {
+      for (let j = 0; j < field[i].length; j++) {
+        if (field[i][j] === '*') {
+          this.playerX = j;
+          this.playerY = i;
+        }
+      }
+    }
     this.field = field;
     this.gameOver = false;
   }
@@ -74,22 +80,49 @@ class Field {
     
   }
 
-  outOfBounds(x, y) {
-    if ((x < 0 || x > this.field[0].length) || (y < 0 || y > this.field.length)) {
+  outOfBounds(y, x) {
+    console.log(y);
+    console.log(this.field.length);
+    if ((x < 0 || x > this.field[0].length - 1) || (y < 0 || y > this.field.length - 1)) {
       console.log('That location is out of bounds');
       this.gameOver = true
       return true;
     }
-    this.validSquare(x, y);
+    this.validSquare(y, x);
     return false;
+  }
+
+  static generateField(height, width, holeCount) {
+    var newGrid = [...Array(height)].map(e => Array(width).fill('░'));
+    newGrid[Math.floor(Math.random() * height)][Math.floor(Math.random() * width)] = '*';
+    while (holeCount > 0) {
+      let holeY = Math.floor(Math.random() * height);
+      let holeX = Math.floor(Math.random() * width);
+      while (newGrid[holeY][holeX] !== '░') {
+        holeY = Math.floor(Math.random() * height);
+        holeX = Math.floor(Math.random() * width);
+      }
+      newGrid[holeY][holeX] = 'O';
+      holeCount--;
+    }
+    let hatX = Math.floor(Math.random() * height);
+    let hatY = Math.floor(Math.random() * width);
+    while (newGrid[hatY][hatX] !== '░') {    
+      hatY = Math.floor(Math.random() * height);
+      hatX = Math.floor(Math.random() * width);
+    }
+    newGrid[hatY][hatX] = '^';
+    return newGrid;
   }
 }
 
-
+/*
 const myField = new Field([
   ['*', '░', 'O'],
   ['O', '░', '░'],
   ['O', '^', '░'],
 ]);
+*/
 
-myField.startGame();
+const randomField = new Field(Field.generateField(10, 6, 10));
+randomField.startGame();
