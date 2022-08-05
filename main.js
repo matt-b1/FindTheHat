@@ -95,23 +95,21 @@ class Field {
   static generateField(height, width, holeCount) {
     var newGrid = [...Array(height)].map(e => Array(width).fill('░'));
     newGrid[Math.floor(Math.random() * height)][Math.floor(Math.random() * width)] = '*';
+    let randY = Math.floor(Math.random() * height);
+    let randX = Math.floor(Math.random() * width);
     while (holeCount > 0) {
-      let holeY = Math.floor(Math.random() * height);
-      let holeX = Math.floor(Math.random() * width);
-      while (newGrid[holeY][holeX] !== '░') {
-        holeY = Math.floor(Math.random() * height);
-        holeX = Math.floor(Math.random() * width);
+      while (newGrid[randY][randX] !== '░') {
+        randY = Math.floor(Math.random() * height);
+        randX = Math.floor(Math.random() * width);
       }
-      newGrid[holeY][holeX] = 'O';
+      newGrid[randY][randX] = 'O';
       holeCount--;
     }
-    let hatX = Math.floor(Math.random() * height);
-    let hatY = Math.floor(Math.random() * width);
-    while (newGrid[hatY][hatX] !== '░') {    
-      hatY = Math.floor(Math.random() * height);
-      hatX = Math.floor(Math.random() * width);
+    while (newGrid[randY][randX] !== '░') {    
+      randY = Math.floor(Math.random() * height);
+      randX = Math.floor(Math.random() * width);
     }
-    newGrid[hatY][hatX] = '^';
+    newGrid[randY][randX] = '^';
     return newGrid;
   }
 }
